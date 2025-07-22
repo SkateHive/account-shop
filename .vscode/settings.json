@@ -1,0 +1,20 @@
+{
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true,
+        "**/CVS": true,
+        "**/.ruby-lsp": true,
+        "**/pnpm-lock.yaml": true,
+        "node_modules": true,
+        "LICENSE": true,
+        "next-env.d.ts": true
+    },
+    "hide-files.files": [
+        "node_modules",
+        "LICENSE",
+        "next-env.d.ts"
+    ]
+}
