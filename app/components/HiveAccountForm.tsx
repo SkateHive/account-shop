@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { checkAccountName, validateUsername } from "../lib/hiveUtils";
 
 interface HiveAccountFormProps {
@@ -22,11 +22,11 @@ export default function HiveAccountForm({
     "idle" | "checking" | "available" | "taken" | "invalid"
   >("idle");
   const [usernameError, setUsernameError] = useState<string>("");
-  const [checkTimeout, setCheckTimeout] = useState<NodeJS.Timeout | null>(null);
+  const checkTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    if (checkTimeout) {
-      clearTimeout(checkTimeout);
+    if (checkTimeoutRef.current) {
+      clearTimeout(checkTimeoutRef.current);
     }
 
     if (!hiveUsername.trim()) {
@@ -69,11 +69,11 @@ export default function HiveAccountForm({
       }
     }, 1000); // Wait 1 second after user stops typing
 
-    setCheckTimeout(timeout);
+    checkTimeoutRef.current = timeout;
 
     return () => {
-      if (timeout) {
-        clearTimeout(timeout);
+      if (checkTimeoutRef.current) {
+        clearTimeout(checkTimeoutRef.current);
       }
     };
   }, [hiveUsername, onValidationChange]);
