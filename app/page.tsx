@@ -3,7 +3,6 @@
 import Header from "./components/Header";
 import SkateHiveAccountShop from "./components/SkateHiveAccountShop";
 import ImageSvg from "./svg/Image";
-import OnchainkitSvg from "./svg/OnchainKit";
 
 export default function App() {
   return (

@@ -65,6 +65,7 @@ export default function HiveAccountForm({
         setUsernameStatus("invalid");
         setUsernameError("Failed to check username availability");
         onValidationChange(false);
+        console.error("Error checking username:", error);
       }
     }, 1000); // Wait 1 second after user stops typing
 

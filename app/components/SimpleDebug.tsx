@@ -11,16 +11,6 @@ export default function SimpleDebug({ onTransactionStatus }: SimpleDebugProps) {
   const [statusLog, setStatusLog] = useState<string[]>([]);
   const [isVisible, setIsVisible] = useState(false);
 
-  const handleStatus = (status: LifecycleStatus) => {
-    // Add to log
-    const timestamp = new Date().toLocaleTimeString();
-    const logEntry = `${timestamp}: ${status.statusName}`;
-    setStatusLog((prev) => [...prev.slice(-9), logEntry]); // Keep last 10 entries
-
-    // Call the original handler
-    onTransactionStatus(status);
-  };
-
   const clearLog = () => {
     setStatusLog([]);
   };
