@@ -2,7 +2,7 @@
 export const ACCOUNT_PRICE_ETH = '0.0000001'; // Price in ETH for account creation
 
 // TODO: Replace with your actual recipient address for receiving payments
-export const RECIPIENT_ADDRESS = '0x1234567890123456789012345678901234567890' as const; // Placeholder address - CHANGE THIS!
+export const RECIPIENT_ADDRESS = '0x41CB654D1F47913ACAB158a8199191D160DAbe4A' as const; // Placeholder address - CHANGE THIS!
 
 export const components = [
   {

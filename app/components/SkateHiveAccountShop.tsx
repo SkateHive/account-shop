@@ -26,14 +26,22 @@ export default function SkateHiveAccountShop() {
   const [email, setEmail] = useState("");
   const [transactionHash, setTransactionHash] = useState<string | null>(null);
   const [isUsernameValid, setIsUsernameValid] = useState(false);
+  const [currentStatus, setCurrentStatus] = useState<string>("");
+  const [showDebug, setShowDebug] = useState(false);
 
   // Handle transaction status changes
   const handleTransactionStatus = (status: LifecycleStatus) => {
     console.log("Transaction status:", status);
+    setCurrentStatus(
+      `${new Date().toLocaleTimeString()}: ${status.statusName}`
+    );
 
     if (status.statusName === "success") {
       const txHash =
-        status.statusData?.transactionReceipts?.[0]?.transactionHash || null;
+        (status.statusData &&
+          "transactionReceipts" in status.statusData &&
+          status.statusData.transactionReceipts?.[0]?.transactionHash) ||
+        null;
       setTransactionHash(txHash);
 
       // Alert for successful transaction
@@ -49,6 +57,7 @@ export default function SkateHiveAccountShop() {
     setHiveUsername("");
     setEmail("");
     setIsUsernameValid(false);
+    setCurrentStatus("");
   };
 
   return (
@@ -56,9 +65,30 @@ export default function SkateHiveAccountShop() {
       <h2 className="text-2xl font-bold text-center mb-4">
         SkateHive Account Shop
       </h2>
-      <p className="text-center mb-4 text-gray-600 dark:text-gray-300">
+      <p className="text-center mb-6 text-gray-600 dark:text-gray-300">
         Create your Hive account for {ACCOUNT_PRICE_ETH} ETH
       </p>
+
+      {/* Simple Debug Toggle */}
+      {currentStatus && (
+        <div className="mb-4">
+          <button
+            onClick={() => setShowDebug(!showDebug)}
+            className="w-full text-xs bg-gray-600 hover:bg-gray-500 text-white px-2 py-1 rounded transition-colors"
+          >
+            {showDebug ? "Hide" : "Show"} Transaction Status
+          </button>
+
+          {showDebug && (
+            <div className="mt-2 bg-gray-900 text-green-400 p-2 rounded text-xs font-mono">
+              <div className="text-green-300 font-bold mb-1">
+                Latest Status:
+              </div>
+              <div>{currentStatus}</div>
+            </div>
+          )}
+        </div>
+      )}
 
       {!transactionHash && (
         <>

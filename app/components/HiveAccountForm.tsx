@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { checkAccountName, validateUsername } from '../lib/hiveUtils';
+import { useState, useEffect } from "react";
+import { checkAccountName, validateUsername } from "../lib/hiveUtils";
 
 interface HiveAccountFormProps {
   hiveUsername: string;
@@ -18,8 +18,10 @@ export default function HiveAccountForm({
   onEmailChange,
   onValidationChange,
 }: HiveAccountFormProps) {
-  const [usernameStatus, setUsernameStatus] = useState<'idle' | 'checking' | 'available' | 'taken' | 'invalid'>('idle');
-  const [usernameError, setUsernameError] = useState<string>('');
+  const [usernameStatus, setUsernameStatus] = useState<
+    "idle" | "checking" | "available" | "taken" | "invalid"
+  >("idle");
+  const [usernameError, setUsernameError] = useState<string>("");
   const [checkTimeout, setCheckTimeout] = useState<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
@@ -28,8 +30,8 @@ export default function HiveAccountForm({
     }
 
     if (!hiveUsername.trim()) {
-      setUsernameStatus('idle');
-      setUsernameError('');
+      setUsernameStatus("idle");
+      setUsernameError("");
       onValidationChange(false);
       return;
     }
@@ -37,31 +39,31 @@ export default function HiveAccountForm({
     // First validate format
     const validation = validateUsername(hiveUsername);
     if (!validation.isValid) {
-      setUsernameStatus('invalid');
-      setUsernameError(validation.error || 'Invalid username format');
+      setUsernameStatus("invalid");
+      setUsernameError(validation.error || "Invalid username format");
       onValidationChange(false);
       return;
     }
 
     // Set a timeout to check availability after user stops typing
     const timeout = setTimeout(async () => {
-      setUsernameStatus('checking');
-      setUsernameError('');
-      
+      setUsernameStatus("checking");
+      setUsernameError("");
+
       try {
         const isTaken = await checkAccountName(hiveUsername);
         if (isTaken) {
-          setUsernameStatus('taken');
-          setUsernameError('Username is already taken');
+          setUsernameStatus("taken");
+          setUsernameError("Username is already taken");
           onValidationChange(false);
         } else {
-          setUsernameStatus('available');
-          setUsernameError('');
+          setUsernameStatus("available");
+          setUsernameError("");
           onValidationChange(true);
         }
       } catch (error) {
-        setUsernameStatus('invalid');
-        setUsernameError('Failed to check username availability');
+        setUsernameStatus("invalid");
+        setUsernameError("Failed to check username availability");
         onValidationChange(false);
       }
     }, 1000); // Wait 1 second after user stops typing
@@ -77,12 +79,12 @@ export default function HiveAccountForm({
 
   const getUsernameStatusIcon = () => {
     switch (usernameStatus) {
-      case 'checking':
+      case "checking":
         return <span className="text-gray-500">⏳</span>;
-      case 'available':
+      case "available":
         return <span className="text-green-500">✅</span>;
-      case 'taken':
-      case 'invalid':
+      case "taken":
+      case "invalid":
         return <span className="text-red-500">❌</span>;
       default:
         return null;
@@ -91,16 +93,16 @@ export default function HiveAccountForm({
 
   const getUsernameStatusText = () => {
     switch (usernameStatus) {
-      case 'checking':
-        return 'Checking availability...';
-      case 'available':
-        return 'Username is available!';
-      case 'taken':
-        return 'Username is already taken';
-      case 'invalid':
+      case "checking":
+        return "Checking availability...";
+      case "available":
+        return "Username is available!";
+      case "taken":
+        return "Username is already taken";
+      case "invalid":
         return usernameError;
       default:
-        return '';
+        return "";
     }
   };
 
@@ -118,11 +120,11 @@ export default function HiveAccountForm({
             onChange={(e) => onUsernameChange(e.target.value.toLowerCase())}
             placeholder="Enter your desired username"
             className={`w-full p-2 border rounded-md bg-white text-black ${
-              usernameStatus === 'available' 
-                ? 'border-green-500' 
-                : usernameStatus === 'taken' || usernameStatus === 'invalid'
-                ? 'border-red-500'
-                : 'border-gray-300'
+              usernameStatus === "available"
+                ? "border-green-500"
+                : usernameStatus === "taken" || usernameStatus === "invalid"
+                ? "border-red-500"
+                : "border-gray-300"
             }`}
             required
           />
@@ -130,14 +132,16 @@ export default function HiveAccountForm({
             {getUsernameStatusIcon()}
           </div>
         </div>
-        {usernameStatus !== 'idle' && (
-          <p className={`text-sm mt-1 ${
-            usernameStatus === 'available' 
-              ? 'text-green-600' 
-              : usernameStatus === 'checking'
-              ? 'text-gray-600'
-              : 'text-red-600'
-          }`}>
+        {usernameStatus !== "idle" && (
+          <p
+            className={`text-sm mt-1 ${
+              usernameStatus === "available"
+                ? "text-green-600"
+                : usernameStatus === "checking"
+                ? "text-gray-600"
+                : "text-red-600"
+            }`}
+          >
             {getUsernameStatusText()}
           </p>
         )}
