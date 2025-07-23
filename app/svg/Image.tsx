@@ -3,26 +3,26 @@ export default function ImageSvg() {
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
       <defs>
         <radialGradient id="sphereGradient" cx="30%" cy="30%" r="70%">
-          <stop offset="0%" stopColor="#4da6ff">
+          <stop offset="0%" stopColor="#aaff00">
             <animate
               attributeName="stop-color"
-              values="#4da6ff;#00ccff;#0066cc;#6600cc;#4da6ff"
+              values="#aaff00;#55ff00;#33cc00;#003300;#aaff00"
               dur="5s"
               repeatCount="indefinite"
             />
           </stop>
-          <stop offset="70%" stopColor="#0066cc">
+          <stop offset="70%" stopColor="#33cc00">
             <animate
               attributeName="stop-color"
-              values="#0066cc;#0099ff;#003366;#3300cc;#0066cc"
+              values="#33cc00;#229900;#116600;#001100;#33cc00"
               dur="5s"
               repeatCount="indefinite"
             />
           </stop>
-          <stop offset="100%" stopColor="#004080">
+          <stop offset="100%" stopColor="#000000">
             <animate
               attributeName="stop-color"
-              values="#004080;#006699;#000033;#000099;#004080"
+              values="#000000;#003300;#000000"
               dur="5s"
               repeatCount="indefinite"
             />
