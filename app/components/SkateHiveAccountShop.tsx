@@ -6,6 +6,7 @@ import HiveAccountForm from "./HiveAccountForm";
 import BuyTransaction from "./BuyTransaction";
 import TransactionSuccess from "./TransactionSuccess";
 import { ACCOUNT_PRICE_ETH } from "./constants";
+import ImageSvg from "../svg/Image";
 
 // Function for creating actual Hive account and sending credentials
 const createHiveAccount = async (
@@ -147,8 +148,11 @@ export default function SkateHiveAccountShop() {
 
   return (
     <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-6 mb-8 max-w-md mx-auto">
+      <div className="w-1/3 mx-auto mb-6">
+        <ImageSvg />
+      </div>
       <h2 className="text-2xl font-bold text-center mb-4">
-        SkateHive Account Shop
+        Buy Skatehive Account
       </h2>
       <p className="text-center mb-6 text-gray-600 dark:text-gray-300">
         Create your Hive account for {ACCOUNT_PRICE_ETH} ETH

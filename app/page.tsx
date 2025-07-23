@@ -12,10 +12,6 @@ export default function App() {
 
       <main className="flex-grow flex items-center justify-center">
         <div className="max-w-4xl w-full p-4">
-          <div className="w-1/3 mx-auto mb-6">
-            <ImageSvg />
-          </div>
-
           {/* Email Testing Component - Only shows in development */}
           <EmailTestingComponent />
 
