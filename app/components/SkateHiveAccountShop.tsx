@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import type { LifecycleStatus } from "@coinbase/onchainkit/transaction";
 import HiveAccountForm from "./HiveAccountForm";
 import BuyTransaction from "./BuyTransaction";
@@ -158,8 +159,15 @@ export default function SkateHiveAccountShop() {
 
   return (
     <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-6 mb-8 max-w-md mx-auto">
-      <div className="w-1/3 mx-auto mb-6">
-        <ImageSvg />
+      <div className="w-2/3 mx-auto mb-8">
+        <Image
+          src="/images/account-shop.png"
+          alt="Skatehive Shop Logo"
+          width={240}
+          height={240}
+          className="w-full h-auto"
+          priority
+        />
       </div>
       <h2 className="text-2xl font-bold text-center mb-4">
         Buy Skatehive Account
