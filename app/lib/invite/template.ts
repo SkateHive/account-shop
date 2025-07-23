@@ -9,9 +9,46 @@ export default function getMailTemplate_Invite(
 ) {
   const localizedStrings = getLocalizedStrings(language);
 
+  // Check if this is a transaction confirmation email
+  const isTransactionConfirmation = keys?.transactionHash && masterPassword === "PENDING_ACCOUNT_CREATION";
+  
   // Replace placeholder in localized string
-  const onboardedMessage = localizedStrings.onboardedMessage.replace('{createdby}', createdby);
+  const onboardedMessage = isTransactionConfirmation 
+    ? `Transaction Confirmation for ${desiredUsername}`
+    : localizedStrings.onboardedMessage.replace('{createdby}', createdby);
+  
   const enterDetailsStep = localizedStrings.enterDetailsStep.replace('{desiredUsername}', desiredUsername);
+
+  // Transaction confirmation content
+  const transactionContent = isTransactionConfirmation ? `
+    <!-- Transaction Confirmation -->
+    <div style="background-color: #e8f5e8; border: 2px solid #4caf50; border-radius: 8px; padding: 20px; margin: 20px 0;">
+      <h3 style="color: #2e7d32; margin-top: 0;">✅ Payment Confirmed!</h3>
+      <p style="margin: 10px 0;"><strong>Transaction Hash:</strong></p>
+      <p style="font-family: monospace; background: #f5f5f5; padding: 10px; border-radius: 4px; word-break: break-all; font-size: 12px; color: #333;">${keys.transactionHash}</p>
+    </div>
+  ` : ``;
+
+  // Account credentials content (only for actual account creation emails)
+  const credentialsContent = !isTransactionConfirmation ? `
+    <!-- Essentials -->
+    <div style="background-color: ${localizedStrings.colors.keyBackground}; border: 2px solid ${localizedStrings.colors.foreground1}; border-radius: 8px; padding: 15px; margin: 20px 0;">
+      <p style="margin: 0; font-weight: bold; color: ${localizedStrings.colors.foreground1};">${localizedStrings.usernameLabel}</p>
+      <p style="margin: 5px 0 15px; font-size: 14px;">${desiredUsername}</p>
+      <p style="margin: 0; font-weight: bold; color: ${localizedStrings.colors.foreground1};">${localizedStrings.masterPasswordLabel}</p>
+      <p style="margin: 5px 0; font-size: 14px;">${masterPassword}</p>
+    </div>
+    <!-- Step-by-step instructions -->
+    <div style="background-color: ${localizedStrings.colors.keyBackground}; padding: 20px; border-radius: 8px; margin-bottom: 30px;">
+      <h3 style="color: ${localizedStrings.colors.foreground1}; margin-top: 0;">${localizedStrings.howToLoginTitle}</h3>
+      <ol style="padding-left: 20px; line-height: 1.6;">
+        <li>${localizedStrings.installKeychainStep}</li>
+        <li>${localizedStrings.openKeychainStep}</li>
+        <li>${enterDetailsStep}</li>
+        <li>${localizedStrings.readyStep}</li>
+      </ol>
+    </div>
+  ` : ``;
 
   const INVITE_MAIL_TEMPLATE = `
 <div style="font-family: 'Segoe UI', sans-serif; background-color: ${localizedStrings.colors.background1}; color: ${localizedStrings.colors.foreground2}; margin: 0; padding: 0;">
@@ -24,24 +61,10 @@ export default function getMailTemplate_Invite(
     <!-- Body -->
     <div style="padding: 25px 30px;">
       <h2 style="color: ${localizedStrings.colors.foreground1};">${onboardedMessage}</h2>
-      <p>${localizedStrings.introParagraph}</p>
-      <!-- Essentials -->
-      <div style="background-color: ${localizedStrings.colors.keyBackground}; border: 2px solid ${localizedStrings.colors.foreground1}; border-radius: 8px; padding: 15px; margin: 20px 0;">
-        <p style="margin: 0; font-weight: bold; color: ${localizedStrings.colors.foreground1};">${localizedStrings.usernameLabel}</p>
-        <p style="margin: 5px 0 15px; font-size: 14px;">${desiredUsername}</p>
-        <p style="margin: 0; font-weight: bold; color: ${localizedStrings.colors.foreground1};">${localizedStrings.masterPasswordLabel}</p>
-        <p style="margin: 5px 0; font-size: 14px;">${masterPassword}</p>
-      </div>
-      <!-- Step-by-step instructions -->
-      <div style="background-color: ${localizedStrings.colors.keyBackground}; padding: 20px; border-radius: 8px; margin-bottom: 30px;">
-        <h3 style="color: ${localizedStrings.colors.foreground1}; margin-top: 0;">${localizedStrings.howToLoginTitle}</h3>
-        <ol style="padding-left: 20px; line-height: 1.6;">
-          <li>${localizedStrings.installKeychainStep}</li>
-          <li>${localizedStrings.openKeychainStep}</li>
-          <li>${enterDetailsStep}</li>
-          <li>${localizedStrings.readyStep}</li>
-        </ol>
-      </div>
+      <p>${isTransactionConfirmation ? 'Thank you for your purchase! Your transaction has been confirmed on the blockchain.' : localizedStrings.introParagraph}</p>
+      
+      ${transactionContent}
+      ${credentialsContent}
       <!-- Image Button (CTA) -->
       <div style="text-align: center; margin: 30px 0;">
         <a href="${localizedStrings.ctaLink}" target="_blank">

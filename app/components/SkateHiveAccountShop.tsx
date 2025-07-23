@@ -7,18 +7,66 @@ import BuyTransaction from "./BuyTransaction";
 import TransactionSuccess from "./TransactionSuccess";
 import { ACCOUNT_PRICE_ETH } from "./constants";
 
-// Placeholder function for Hive account creation
+// Function for sending transaction confirmation email
 const createHiveAccount = async (
   username: string,
   email: string,
   txHash: string
 ) => {
-  console.log("TODO: Create Hive account", { username, email, txHash });
-  // TODO: Implement Hive account creation API call
-  // TODO: Send credentials via email
-  alert(
-    `TODO: Creating Hive account for ${username} and sending credentials to ${email}`
-  );
+  console.log("Sending transaction confirmation email", {
+    username,
+    email,
+    txHash,
+  });
+
+  try {
+    const emailData = {
+      to: email,
+      subject: "Transaction Confirmation - SkateHive Account Purchase",
+      createdby: "SkateHive Account Shop",
+      desiredUsername: username,
+      masterPassword: "PENDING_ACCOUNT_CREATION", // Placeholder until account is created
+      keys: {
+        posting: "PENDING_GENERATION",
+        active: "PENDING_GENERATION",
+        memo: "PENDING_GENERATION",
+        owner: "PENDING_GENERATION",
+        transactionHash: txHash, // Include the actual transaction hash
+      },
+      language: "en",
+    };
+
+    const response = await fetch("/api/invite", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(emailData),
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+      console.log("✅ Transaction confirmation email sent successfully!");
+      alert(
+        `✅ Transaction confirmed! Confirmation email sent to ${email} with transaction hash: ${txHash}`
+      );
+    } else {
+      console.error("❌ Failed to send confirmation email:", result.error);
+      alert(
+        `⚠️ Transaction confirmed but failed to send email: ${
+          result.error || "Unknown error"
+        }`
+      );
+    }
+  } catch (error) {
+    console.error("❌ Error sending confirmation email:", error);
+    alert(
+      `⚠️ Transaction confirmed but email service error: ${
+        error instanceof Error ? error.message : "Unknown error"
+      }`
+    );
+  }
 };
 
 export default function SkateHiveAccountShop() {
@@ -134,9 +182,7 @@ export default function SkateHiveAccountShop() {
                         const testHash =
                           "0x" + Date.now().toString(16).padStart(64, "0");
                         setTransactionHash(testHash);
-                        alert(
-                          `Manually triggered success with hash: ${testHash}`
-                        );
+                        createHiveAccount(hiveUsername, email, testHash);
                       }}
                       className="bg-yellow-600 hover:bg-yellow-500 text-white px-2 py-1 rounded text-xs mr-2"
                     >

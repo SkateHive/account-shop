@@ -33,9 +33,14 @@ export default async function serverMailer(
       //wordwrap: 130,   // Optional: Set a word wrap length (e.g., 130 characters)
     });
 
-    // Define the attachment object
+    // Check if this is a transaction confirmation email
+    const isTransactionConfirmation = keys?.transactionHash && masterPassword === "PENDING_ACCOUNT_CREATION";
+    
+    // Define the attachment object with conditional naming
     const attachment = {
-      name: "KEYS-BACKUP" + desiredUsername + "-SKATEHIVE.TXT",
+      name: isTransactionConfirmation 
+        ? `TRANSACTION-CONFIRMATION-${desiredUsername}-SKATEHIVE.TXT`
+        : `KEYS-BACKUP-${desiredUsername}-SKATEHIVE.TXT`,
       data: text,
       type: "text/plain"
     };
