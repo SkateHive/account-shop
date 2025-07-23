@@ -7,7 +7,7 @@ import ImageSvg from "./svg/Image";
 
 export default function App() {
   return (
-    <div className="flex flex-col min-h-screen font-sans bg-white text-black dark:bg-black dark:text-white">
+    <div className="flex flex-col min-h-screen font-sans bg-white text-gray-800 dark:bg-gray-800 dark:text-white">
       <Header />
 
       <main className="flex-grow flex items-center justify-center">

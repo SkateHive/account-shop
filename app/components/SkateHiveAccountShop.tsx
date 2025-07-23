@@ -161,7 +161,10 @@ export default function SkateHiveAccountShop() {
     <div className="relative max-w-md mx-auto mb-8">
       <GlowCapture>
         <Glow color="blue">
-          <div className="glow-border relative bg-gray-100 dark:bg-gray-800 rounded-lg p-6 shadow-xl transition-all duration-300">
+          <div
+            className="glow-border relative rounded-lg p-6 shadow-xl transition-all duration-300 text-white"
+            style={{ backgroundColor: "#0f0f0f" }}
+          >
             <div className="w-2/3 mx-auto mb-8">
               <Image
                 src="/images/account-shop.png"
@@ -172,17 +175,17 @@ export default function SkateHiveAccountShop() {
                 priority
               />
             </div>
-            <h2 className="text-2xl font-bold text-center mb-4">
+            <h2 className="text-2xl font-bold text-center mb-4 text-white">
               Buy Skatehive Account
             </h2>
-            <p className="text-center mb-6 text-gray-600 dark:text-gray-300">
+            <p className="text-center mb-6 text-gray-300">
               Create your Skatehive account for{" "}
               {TOKEN_INFO[selectedToken].price} {selectedToken}
             </p>
 
             {/* Token Selection */}
             <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 Payment Method
               </label>
               <div className="grid grid-cols-2 gap-3">
@@ -192,8 +195,10 @@ export default function SkateHiveAccountShop() {
                     onClick={() => setSelectedToken(token as PaymentToken)}
                     className={`p-3 rounded-lg border-2 transition-all duration-200 w-full ${
                       selectedToken === token
-                        ? "border-lime-500 bg-lime-50 dark:bg-lime-900/20 text-lime-700 dark:text-lime-300"
-                        : "border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:border-blue-300 dark:hover:border-blue-500"
+                        ? token === "ETH"
+                          ? "border-blue-400 bg-blue-400/20 text-blue-300"
+                          : "border-cyan-400 bg-cyan-400/20 text-cyan-300"
+                        : "border-gray-600 bg-gray-800 text-gray-300 hover:border-green-400 hover:bg-green-400/10"
                     }`}
                   >
                     <div className="text-center">

@@ -120,12 +120,12 @@ export default function HiveAccountForm({
             value={hiveUsername}
             onChange={(e) => onUsernameChange(e.target.value.toLowerCase())}
             placeholder="Enter your desired username"
-            className={`w-full p-2 border rounded-md bg-white text-black ${
+            className={`w-full p-2 border rounded-md bg-white text-gray-800 dark:bg-gray-700 dark:text-white ${
               usernameStatus === "available"
                 ? "border-green-500"
                 : usernameStatus === "taken" || usernameStatus === "invalid"
                 ? "border-red-500"
-                : "border-gray-300"
+                : "border-gray-300 dark:border-gray-600"
             }`}
             required
           />
@@ -157,7 +157,7 @@ export default function HiveAccountForm({
           value={email}
           onChange={(e) => onEmailChange(e.target.value)}
           placeholder="Enter your email"
-          className="w-full p-2 border border-gray-300 rounded-md bg-white text-black"
+          className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-800 dark:text-white"
           required
         />
       </div>

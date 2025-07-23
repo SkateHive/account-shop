@@ -2,14 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+  :root {
+    --background: #050505;
+    --foreground: #ededed;
+  }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #0a0a0a; /* Almost black page background */
     --foreground: #ededed;
   }
 }
@@ -45,6 +45,7 @@ body {
   mask-composite: exclude;
   opacity: 0;
   transition: opacity 0.3s ease;
+  pointer-events: none;
 }
 
 .glow-border:hover::before {
