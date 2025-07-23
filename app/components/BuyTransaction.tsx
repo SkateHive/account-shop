@@ -8,13 +8,14 @@ import {
   TransactionStatusLabel,
 } from "@coinbase/onchainkit/transaction";
 import type { LifecycleStatus } from "@coinbase/onchainkit/transaction";
-import { parseEther } from "viem";
-import { ACCOUNT_PRICE_ETH, RECIPIENT_ADDRESS } from "./constants";
+import { parseEther, parseUnits, encodeFunctionData } from "viem";
+import { RECIPIENT_ADDRESS, TOKEN_INFO, type PaymentToken } from "./constants";
 
 interface BuyTransactionProps {
   hiveUsername: string;
   email: string;
   isUsernameValid: boolean;
+  selectedToken: PaymentToken;
   onTransactionStatus: (status: LifecycleStatus) => void;
 }
 
@@ -22,25 +23,60 @@ export default function BuyTransaction({
   hiveUsername,
   email,
   isUsernameValid,
+  selectedToken,
   onTransactionStatus,
 }: BuyTransactionProps) {
-  const isFormValid = hiveUsername.trim() && email.trim() && isUsernameValid; // Enhanced transaction calls with metadata in the data field
-  const calls = [
-    {
+  const isFormValid = hiveUsername.trim() && email.trim() && isUsernameValid;
+
+  const tokenInfo = TOKEN_INFO[selectedToken];
+
+  // Create transaction calls based on selected token
+  const calls = [];
+
+  if (selectedToken === "ETH") {
+    // Native ETH transfer
+    calls.push({
       to: RECIPIENT_ADDRESS as `0x${string}`,
-      value: parseEther(ACCOUNT_PRICE_ETH),
-      // Include metadata as hex-encoded data for transparency
+      value: parseEther(tokenInfo.price),
       data: `0x${Buffer.from(
         JSON.stringify({
           type: "hive-account-purchase",
           username: hiveUsername,
           email: email,
+          token: selectedToken,
           timestamp: Date.now(),
           version: "1.0",
         })
       ).toString("hex")}` as `0x${string}`,
-    },
-  ];
+    });
+  } else if (selectedToken === "USDC") {
+    // ERC-20 USDC transfer
+    const usdcAmount = parseUnits(tokenInfo.price, tokenInfo.decimals);
+
+    // ERC-20 transfer function signature: transfer(address,uint256)
+    const transferData = encodeFunctionData({
+      abi: [
+        {
+          name: "transfer",
+          type: "function",
+          inputs: [
+            { name: "to", type: "address" },
+            { name: "amount", type: "uint256" },
+          ],
+          outputs: [{ name: "", type: "bool" }],
+          stateMutability: "nonpayable",
+        },
+      ],
+      functionName: "transfer",
+      args: [RECIPIENT_ADDRESS, usdcAmount],
+    });
+
+    calls.push({
+      to: tokenInfo.address as `0x${string}`,
+      value: BigInt(0), // No ETH value for ERC-20 transfers
+      data: transferData,
+    });
+  }
 
   return (
     <div className="space-y-4">
@@ -49,7 +85,7 @@ export default function BuyTransaction({
         <TransactionButton
           disabled={!isFormValid}
           className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 disabled:from-gray-400 disabled:to-gray-500 text-white font-bold py-4 px-6 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl"
-          text={`Buy Hive Account (${ACCOUNT_PRICE_ETH} ETH)`}
+          text={`Buy Hive Account (${tokenInfo.price} ${tokenInfo.symbol})`}
         />
         <TransactionStatus>
           <TransactionStatusLabel className="text-center font-medium" />
@@ -91,7 +127,9 @@ export default function BuyTransaction({
         <div className="grid grid-cols-2 gap-2 text-sm">
           <div>
             <span className="text-gray-600 dark:text-gray-400">Price:</span>
-            <span className="ml-2 font-mono">{ACCOUNT_PRICE_ETH} ETH</span>
+            <span className="ml-2 font-mono">
+              {tokenInfo.price} {tokenInfo.symbol}
+            </span>
           </div>
           <div>
             <span className="text-gray-600 dark:text-gray-400">Network:</span>

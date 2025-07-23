@@ -5,19 +5,21 @@ import type { LifecycleStatus } from "@coinbase/onchainkit/transaction";
 import HiveAccountForm from "./HiveAccountForm";
 import BuyTransaction from "./BuyTransaction";
 import TransactionSuccess from "./TransactionSuccess";
-import { ACCOUNT_PRICE_ETH } from "./constants";
+import { ACCOUNT_PRICE_ETH, TOKEN_INFO, type PaymentToken } from "./constants";
 import ImageSvg from "../svg/Image";
 
 // Function for creating actual Hive account and sending credentials
 const createHiveAccount = async (
   username: string,
   email: string,
-  txHash: string
+  txHash: string,
+  selectedToken: PaymentToken
 ) => {
   console.log("🚀 Starting Hive account creation process", {
     username,
     email,
     txHash,
+    selectedToken,
   });
 
   try {
@@ -32,6 +34,7 @@ const createHiveAccount = async (
         username,
         email,
         txHash,
+        selectedToken,
       }),
     });
 
@@ -72,6 +75,7 @@ const createHiveAccount = async (
 export default function SkateHiveAccountShop() {
   const [hiveUsername, setHiveUsername] = useState("");
   const [email, setEmail] = useState("");
+  const [selectedToken, setSelectedToken] = useState<PaymentToken>("ETH");
   const [transactionHash, setTransactionHash] = useState<string | null>(null);
   const [isUsernameValid, setIsUsernameValid] = useState(false);
   const [currentStatus, setCurrentStatus] = useState<string>("");
@@ -114,7 +118,12 @@ export default function SkateHiveAccountShop() {
             const placeholderHash =
               "0x" + Date.now().toString(16).padStart(64, "0");
             setTransactionHash(placeholderHash);
-            createHiveAccount(hiveUsername, email, placeholderHash);
+            createHiveAccount(
+              hiveUsername,
+              email,
+              placeholderHash,
+              selectedToken
+            );
             alert(
               `Transaction completed! Using placeholder hash: ${placeholderHash}`
             );
@@ -126,7 +135,7 @@ export default function SkateHiveAccountShop() {
       if (txHash) {
         setTransactionHash(txHash);
         alert(`Payment confirmed! Transaction hash: ${txHash}`);
-        createHiveAccount(hiveUsername, email, txHash);
+        createHiveAccount(hiveUsername, email, txHash, selectedToken);
       }
     }
   };
@@ -135,6 +144,7 @@ export default function SkateHiveAccountShop() {
     setTransactionHash(null);
     setHiveUsername("");
     setEmail("");
+    setSelectedToken("ETH");
     setIsUsernameValid(false);
     setCurrentStatus("");
     setTransactionKey((prev) => prev + 1); // Force Transaction component to re-render
@@ -155,8 +165,34 @@ export default function SkateHiveAccountShop() {
         Buy Skatehive Account
       </h2>
       <p className="text-center mb-6 text-gray-600 dark:text-gray-300">
-        Create your Hive account for {ACCOUNT_PRICE_ETH} ETH
+        Create your Hive account for {TOKEN_INFO[selectedToken].price}{" "}
+        {selectedToken}
       </p>
+
+      {/* Token Selection */}
+      <div className="mb-6">
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          Payment Method
+        </label>
+        <div className="grid grid-cols-2 gap-3">
+          {Object.entries(TOKEN_INFO).map(([token, info]) => (
+            <button
+              key={token}
+              onClick={() => setSelectedToken(token as PaymentToken)}
+              className={`p-3 rounded-lg border-2 transition-all duration-200 ${
+                selectedToken === token
+                  ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300"
+                  : "border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:border-blue-300 dark:hover:border-blue-500"
+              }`}
+            >
+              <div className="text-center">
+                <div className="font-semibold">{info.symbol}</div>
+                <div className="text-sm opacity-75">{info.price}</div>
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>
 
       {/* Simple Debug Toggle */}
       {currentStatus && (
@@ -185,7 +221,12 @@ export default function SkateHiveAccountShop() {
                         const testHash =
                           "0x" + Date.now().toString(16).padStart(64, "0");
                         setTransactionHash(testHash);
-                        createHiveAccount(hiveUsername, email, testHash);
+                        createHiveAccount(
+                          hiveUsername,
+                          email,
+                          testHash,
+                          selectedToken
+                        );
                       }}
                       className="bg-yellow-600 hover:bg-yellow-500 text-white px-2 py-1 rounded text-xs mr-2"
                     >
@@ -219,6 +260,7 @@ export default function SkateHiveAccountShop() {
             hiveUsername={hiveUsername}
             email={email}
             isUsernameValid={isUsernameValid}
+            selectedToken={selectedToken}
             onTransactionStatus={handleTransactionStatus}
           />
         </>
