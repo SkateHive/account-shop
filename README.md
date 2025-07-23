@@ -27,7 +27,7 @@ The SkateHive Account Shop aims to:
 
 ### Prerequisites
 
-- Node.js 18+ 
+- Node.js 18+
 - npm, yarn, pnpm, or bun
 - A Hive account with account creation tokens or HIVE for creating accounts
 - SMTP email service for credential delivery
@@ -59,19 +59,21 @@ NEXT_PUBLIC_ONCHAINKIT_API_KEY=your-coinbase-api-key
 
 - **ACCOUNT_CREATOR**: Your Hive account that will create new accounts (must have account creation tokens or HIVE)
 - **ACCOUNT_CREATOR_ACTIVE_KEY**: The active private key for the account creator
-- **SMTP_***: Email service configuration for sending account credentials
+- **SMTP\_\***: Email service configuration for sending account credentials
 - **EMAIL_COMMUNITY**: Email address for community-related correspondence
 - **EMAIL_RECOVERYACC**: Email address for account recovery assistance
 
 ### Installation & Setup
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/SkateHive/account-shop.git
    cd account-shop
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    # or
@@ -83,12 +85,14 @@ NEXT_PUBLIC_ONCHAINKIT_API_KEY=your-coinbase-api-key
    ```
 
 3. **Configure environment variables**
+
    ```bash
    cp .env.example .env.local
    # Edit .env.local with your configuration
    ```
 
 4. **Run the development server**
+
    ```bash
    npm run dev
    # or
@@ -105,6 +109,7 @@ NEXT_PUBLIC_ONCHAINKIT_API_KEY=your-coinbase-api-key
 ### Production Deployment
 
 1. **Build the application**
+
    ```bash
    npm run build
    ```
@@ -119,22 +124,22 @@ NEXT_PUBLIC_ONCHAINKIT_API_KEY=your-coinbase-api-key
 You can adjust pricing and wallet addresses in `app/components/constants.ts`:
 
 ```typescript
-export const ACCOUNT_PRICE_ETH = '0.0015'; // Price in ETH
-export const ACCOUNT_PRICE_USDC = '3.50'; // Price in USDC
-export const RECIPIENT_ADDRESS = '0xYourWalletAddress'; // Payment recipient
+export const ACCOUNT_PRICE_ETH = "0.0015"; // Price in ETH
+export const ACCOUNT_PRICE_USDC = "3.50"; // Price in USDC
+export const RECIPIENT_ADDRESS = "0xYourWalletAddress"; // Payment recipient
 ```
 
 ## 🛠 Tech Stack
 
 - **Frontend**: Next.js 15 with TypeScript and Tailwind CSS
 - **Web3 Integration**: Coinbase OnchainKit for Base network transactions
-- **Blockchain Integration**: 
+- **Blockchain Integration**:
   - Base network for payments (ETH/USDC)
   - Hive blockchain for account creation via @hiveio/dhive
 - **State Management**: React hooks and TanStack Query for server state
 - **Wallet Integration**: Wagmi v2 for Ethereum wallet connections
 - **Email Service**: Nodemailer for SMTP credential delivery
-- **Styling**: 
+- **Styling**:
   - Tailwind CSS for utility-first styling
   - @codaworks/react-glow for premium glow effects
 - **Development**: TypeScript, ESLint, and Next.js development tools
@@ -180,9 +185,11 @@ app/
 ## 🔧 API Endpoints
 
 ### `POST /api/create-account`
+
 Creates a new Hive account and sends credentials via email.
 
 **Request Body:**
+
 ```json
 {
   "username": "skatehive-user",
@@ -193,6 +200,7 @@ Creates a new Hive account and sends credentials via email.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -206,9 +214,11 @@ Creates a new Hive account and sends credentials via email.
 ```
 
 ### `GET /api/health`
+
 Health check endpoint for monitoring application status.
 
 ### `POST /api/invite`
+
 Email invitation system for sending account information.
 
 ## 🔐 Security Considerations
@@ -223,12 +233,15 @@ Email invitation system for sending account information.
 ## 🚀 Deployment
 
 ### Vercel (Recommended)
+
 1. Connect your GitHub repository to Vercel
 2. Add environment variables in Vercel dashboard
 3. Deploy automatically on push to main branch
 
 ### Other Platforms
+
 The application can be deployed on any Node.js hosting platform:
+
 - Netlify
 - Railway
 - Heroku
@@ -237,11 +250,13 @@ The application can be deployed on any Node.js hosting platform:
 ## 🧪 Testing
 
 ### Manual Testing
+
 - Use the built-in debug mode to monitor transaction status
 - Test with small amounts first
 - Verify email delivery in different email clients
 
 ### Environment Testing
+
 ```bash
 # Check environment configuration
 npm run dev
@@ -253,14 +268,17 @@ npm run dev
 ### Common Issues
 
 1. **"Missing required environment variables"**
+
    - Ensure all variables in `.env.local` are set
    - Check for typos in variable names
 
 2. **"Failed to create Hive account"**
+
    - Verify your account creator has sufficient account creation tokens or HIVE
    - Check that the active key is correct
 
 3. **"Email not delivered"**
+
    - Verify SMTP configuration
    - Check spam folders
    - Test email credentials separately
@@ -270,11 +288,13 @@ npm run dev
    - Check transaction hash in Base block explorer
 
 ### Debug Mode
+
 Enable debug mode in the application to see detailed transaction status and manually force success for testing.
 
 ## 📊 Monitoring
 
 The application includes:
+
 - Health check endpoint at `/api/health`
 - Console logging for all major operations
 - Transaction status tracking
@@ -318,4 +338,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Made with ❤️ by the SkateHive Community**
 
-*Bringing Web3 to skateboarding, one account at a time.* 🛹
+_Bringing Web3 to skateboarding, one account at a time._ 🛹
