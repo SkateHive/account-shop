@@ -2,6 +2,7 @@
 
 import Header from "./components/Header";
 import SkateHiveAccountShop from "./components/SkateHiveAccountShop";
+import EmailTestingComponent from "./components/EmailTestingComponent";
 import ImageSvg from "./svg/Image";
 
 export default function App() {
@@ -14,6 +15,10 @@ export default function App() {
           <div className="w-1/3 mx-auto mb-6">
             <ImageSvg />
           </div>
+
+          {/* Email Testing Component - Only shows in development */}
+          <EmailTestingComponent />
+
           {/* Main SkateHive Account Shop */}
           <SkateHiveAccountShop />
         </div>
