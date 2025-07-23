@@ -120,13 +120,20 @@ export default function HiveAccountForm({
             value={hiveUsername}
             onChange={(e) => onUsernameChange(e.target.value.toLowerCase())}
             placeholder="Enter your desired username"
-            className={`w-full p-2 border rounded-md bg-white text-gray-800 dark:bg-gray-700 dark:text-white ${
+            className={`w-full p-2 border rounded-md bg-white text-black dark:bg-gray-700 dark:text-white outline-none focus:outline-none focus:ring-0 focus:border-current hover:border-current hover:ring-0 hover:outline-none ${
               usernameStatus === "available"
                 ? "border-green-500"
                 : usernameStatus === "taken" || usernameStatus === "invalid"
                 ? "border-red-500"
                 : "border-gray-300 dark:border-gray-600"
             }`}
+            style={{
+              boxShadow: "none !important",
+              background: "white",
+              backgroundImage: "none !important",
+              filter: "none !important",
+              color: "black",
+            }}
             required
           />
           <div className="absolute right-2 top-2">
@@ -157,7 +164,14 @@ export default function HiveAccountForm({
           value={email}
           onChange={(e) => onEmailChange(e.target.value)}
           placeholder="Enter your email"
-          className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-800 dark:text-white"
+          className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-black dark:text-white outline-none focus:outline-none focus:ring-0 focus:border-current hover:border-current hover:ring-0 hover:outline-none"
+          style={{
+            boxShadow: "none !important",
+            background: "white",
+            backgroundImage: "none !important",
+            filter: "none !important",
+            color: "black",
+          }}
           required
         />
       </div>
