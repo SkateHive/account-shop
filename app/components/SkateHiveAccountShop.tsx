@@ -2,12 +2,12 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { GlowCapture, Glow } from "@codaworks/react-glow";
 import type { LifecycleStatus } from "@coinbase/onchainkit/transaction";
 import HiveAccountForm from "./HiveAccountForm";
 import BuyTransaction from "./BuyTransaction";
 import TransactionSuccess from "./TransactionSuccess";
 import { ACCOUNT_PRICE_ETH, TOKEN_INFO, type PaymentToken } from "./constants";
-import ImageSvg from "../svg/Image";
 
 // Function for creating actual Hive account and sending credentials
 const createHiveAccount = async (
@@ -158,129 +158,136 @@ export default function SkateHiveAccountShop() {
   };
 
   return (
-    <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-6 mb-8 max-w-md mx-auto">
-      <div className="w-2/3 mx-auto mb-8">
-        <Image
-          src="/images/account-shop.png"
-          alt="Skatehive Shop Logo"
-          width={240}
-          height={240}
-          className="w-full h-auto"
-          priority
-        />
-      </div>
-      <h2 className="text-2xl font-bold text-center mb-4">
-        Buy Skatehive Account
-      </h2>
-      <p className="text-center mb-6 text-gray-600 dark:text-gray-300">
-        Create your Hive account for {TOKEN_INFO[selectedToken].price}{" "}
-        {selectedToken}
-      </p>
+    <div className="relative max-w-md mx-auto mb-8">
+      <GlowCapture>
+        <Glow color="blue">
+          <div className="glow-border relative bg-gray-100 dark:bg-gray-800 rounded-lg p-6 shadow-xl transition-all duration-300">
+            <div className="w-2/3 mx-auto mb-8">
+              <Image
+                src="/images/account-shop.png"
+                alt="Skatehive Shop Logo"
+                width={240}
+                height={240}
+                className="w-full h-auto"
+                priority
+              />
+            </div>
+            <h2 className="text-2xl font-bold text-center mb-4">
+              Buy Skatehive Account
+            </h2>
+            <p className="text-center mb-6 text-gray-600 dark:text-gray-300">
+              Create your Skatehive account for{" "}
+              {TOKEN_INFO[selectedToken].price} {selectedToken}
+            </p>
 
-      {/* Token Selection */}
-      <div className="mb-6">
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-          Payment Method
-        </label>
-        <div className="grid grid-cols-2 gap-3">
-          {Object.entries(TOKEN_INFO).map(([token, info]) => (
-            <button
-              key={token}
-              onClick={() => setSelectedToken(token as PaymentToken)}
-              className={`p-3 rounded-lg border-2 transition-all duration-200 ${
-                selectedToken === token
-                  ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300"
-                  : "border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:border-blue-300 dark:hover:border-blue-500"
-              }`}
-            >
-              <div className="text-center">
-                <div className="font-semibold">{info.symbol}</div>
-                <div className="text-sm opacity-75">{info.price}</div>
+            {/* Token Selection */}
+            <div className="mb-6">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Payment Method
+              </label>
+              <div className="grid grid-cols-2 gap-3">
+                {Object.entries(TOKEN_INFO).map(([token, info]) => (
+                  <button
+                    key={token}
+                    onClick={() => setSelectedToken(token as PaymentToken)}
+                    className={`p-3 rounded-lg border-2 transition-all duration-200 w-full ${
+                      selectedToken === token
+                        ? "border-lime-500 bg-lime-50 dark:bg-lime-900/20 text-lime-700 dark:text-lime-300"
+                        : "border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:border-blue-300 dark:hover:border-blue-500"
+                    }`}
+                  >
+                    <div className="text-center">
+                      <div className="font-semibold">{info.symbol}</div>
+                      <div className="text-sm opacity-75">{info.price}</div>
+                    </div>
+                  </button>
+                ))}
               </div>
-            </button>
-          ))}
-        </div>
-      </div>
+            </div>
 
-      {/* Simple Debug Toggle */}
-      {currentStatus && (
-        <div className="mb-4">
-          <button
-            onClick={() => setShowDebug(!showDebug)}
-            className="w-full text-xs bg-gray-600 hover:bg-gray-500 text-white px-2 py-1 rounded transition-colors"
-          >
-            {showDebug ? "Hide" : "Show"} Transaction Status
-          </button>
+            {/* Simple Debug Toggle */}
+            {currentStatus && (
+              <div className="mb-4">
+                <button
+                  onClick={() => setShowDebug(!showDebug)}
+                  className="w-full text-xs bg-gray-600 hover:bg-gray-500 text-white px-2 py-1 rounded transition-colors"
+                >
+                  {showDebug ? "Hide" : "Show"} Transaction Status
+                </button>
 
-          {showDebug && (
-            <div className="mt-2 bg-gray-900 text-green-400 p-2 rounded text-xs font-mono">
-              <div className="text-green-300 font-bold mb-1">
-                Latest Status:
-              </div>
-              <div>{currentStatus}</div>
+                {showDebug && (
+                  <div className="mt-2 bg-gray-700 text-green-400 p-2 rounded text-xs font-mono border border-gray-600">
+                    <div className="text-green-300 font-bold mb-1">
+                      Latest Status:
+                    </div>
+                    <div>{currentStatus}</div>
 
-              {/* Manual override for testing */}
-              {currentStatus.includes("transactionLegacyExecuted") &&
-                !transactionHash && (
-                  <div className="mt-2 space-y-1">
-                    <button
-                      onClick={() => {
-                        // Manually set a test transaction hash
-                        const testHash =
-                          "0x" + Date.now().toString(16).padStart(64, "0");
-                        setTransactionHash(testHash);
-                        createHiveAccount(
-                          hiveUsername,
-                          email,
-                          testHash,
-                          selectedToken
-                        );
-                      }}
-                      className="bg-yellow-600 hover:bg-yellow-500 text-white px-2 py-1 rounded text-xs mr-2"
-                    >
-                      Force Success
-                    </button>
-                    <button
-                      onClick={resetTransaction}
-                      className="bg-red-600 hover:bg-red-500 text-white px-2 py-1 rounded text-xs"
-                    >
-                      Reset Transaction
-                    </button>
+                    {/* Manual override for testing */}
+                    {currentStatus.includes("transactionLegacyExecuted") &&
+                      !transactionHash && (
+                        <div className="mt-2 space-y-1">
+                          <button
+                            onClick={() => {
+                              // Manually set a test transaction hash
+                              const testHash =
+                                "0x" +
+                                Date.now().toString(16).padStart(64, "0");
+                              setTransactionHash(testHash);
+                              createHiveAccount(
+                                hiveUsername,
+                                email,
+                                testHash,
+                                selectedToken
+                              );
+                            }}
+                            className="bg-yellow-600 hover:bg-yellow-500 text-white px-2 py-1 rounded text-xs mr-2"
+                          >
+                            Force Success
+                          </button>
+                          <button
+                            onClick={resetTransaction}
+                            className="bg-red-600 hover:bg-red-500 text-white px-2 py-1 rounded text-xs"
+                          >
+                            Reset Transaction
+                          </button>
+                        </div>
+                      )}
                   </div>
                 )}
-            </div>
-          )}
-        </div>
-      )}
+              </div>
+            )}
 
-      {!transactionHash && (
-        <>
-          <HiveAccountForm
-            hiveUsername={hiveUsername}
-            email={email}
-            onUsernameChange={setHiveUsername}
-            onEmailChange={setEmail}
-            onValidationChange={setIsUsernameValid}
-          />
+            {!transactionHash && (
+              <>
+                <HiveAccountForm
+                  hiveUsername={hiveUsername}
+                  email={email}
+                  onUsernameChange={setHiveUsername}
+                  onEmailChange={setEmail}
+                  onValidationChange={setIsUsernameValid}
+                />
 
-          <BuyTransaction
-            key={transactionKey}
-            hiveUsername={hiveUsername}
-            email={email}
-            isUsernameValid={isUsernameValid}
-            selectedToken={selectedToken}
-            onTransactionStatus={handleTransactionStatus}
-          />
-        </>
-      )}
+                <BuyTransaction
+                  key={transactionKey}
+                  hiveUsername={hiveUsername}
+                  email={email}
+                  isUsernameValid={isUsernameValid}
+                  selectedToken={selectedToken}
+                  onTransactionStatus={handleTransactionStatus}
+                />
+              </>
+            )}
 
-      {transactionHash && (
-        <TransactionSuccess
-          email={email}
-          transactionHash={transactionHash}
-          onCreateAnother={handleCreateAnother}
-        />
-      )}
+            {transactionHash && (
+              <TransactionSuccess
+                email={email}
+                transactionHash={transactionHash}
+                onCreateAnother={handleCreateAnother}
+              />
+            )}
+          </div>
+        </Glow>
+      </GlowCapture>
     </div>
   );
 }

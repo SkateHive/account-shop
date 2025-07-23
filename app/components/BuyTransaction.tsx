@@ -93,17 +93,6 @@ export default function BuyTransaction({
         </TransactionStatus>
       </Transaction>
 
-      {/* Wallet Compatibility Info */}
-      <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3">
-        <div className="flex items-center space-x-2">
-          <span className="text-blue-600 dark:text-blue-400">💼</span>
-          <p className="text-sm text-blue-700 dark:text-blue-300">
-            <strong>Any wallet supported:</strong> MetaMask, Coinbase Wallet,
-            WalletConnect, Farcaster, TBA wallets, and more!
-          </p>
-        </div>
-      </div>
-
       {/* Form Validation Message */}
       {!isFormValid &&
         hiveUsername.trim() &&
