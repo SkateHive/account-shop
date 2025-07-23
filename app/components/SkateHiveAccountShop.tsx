@@ -7,7 +7,7 @@ import type { LifecycleStatus } from "@coinbase/onchainkit/transaction";
 import HiveAccountForm from "./HiveAccountForm";
 import BuyTransaction from "./BuyTransaction";
 import TransactionSuccess from "./TransactionSuccess";
-import { ACCOUNT_PRICE_ETH, TOKEN_INFO, type PaymentToken } from "./constants";
+import { TOKEN_INFO, type PaymentToken } from "./constants";
 
 // Function for creating actual Hive account and sending credentials
 const createHiveAccount = async (
