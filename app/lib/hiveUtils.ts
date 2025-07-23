@@ -1,6 +1,30 @@
 import HiveClient from './hiveClient';
 import * as dhive from '@hiveio/dhive';
 
+// Types for account creation
+interface HiveAccount {
+  username: string;
+  password: string;
+  keys: {
+    owner: string;
+    active: string;
+    posting: string;
+    memo: string;
+    ownerPubkey: string;
+    activePubkey: string;
+    postingPubkey: string;
+    memoPubkey: string;
+  };
+}
+
+interface AccountCreationResult {
+  success: boolean;
+  account?: HiveAccount;
+  transactionId?: string;
+  error?: string;
+  method?: 'claimed' | 'paid';
+}
+
 
 /**
  * Checks if a Hive account name is available.
@@ -95,3 +119,202 @@ export const getPrivateKeys = (username: string, password: string, roles = ['own
     });
     return privKeys;
 };
+
+/**
+ * Creates a new Hive account using account creation tokens or HIVE payment
+ * @param {string} username - The desired username for the new account
+ * @param {string} creatorUsername - The account creator username
+ * @param {string} creatorActiveKey - The account creator's active key
+ * @returns {Promise<AccountCreationResult>} Result of the account creation
+ */
+export async function createHiveAccount(
+    username: string, 
+    creatorUsername: string, 
+    creatorActiveKey: string
+): Promise<AccountCreationResult> {
+    try {
+        console.log('🔍 Creating account with credentials:', {
+            username,
+            creatorUsername: creatorUsername ? 'SET' : 'MISSING',
+            creatorActiveKey: creatorActiveKey ? 'SET' : 'MISSING'
+        });
+
+        // Validate username first
+        const validation = validateUsername(username);
+        if (!validation.isValid) {
+            return {
+                success: false,
+                error: validation.error
+            };
+        }
+
+        // Check if username is available
+        const isTaken = await checkAccountName(username);
+        if (isTaken) {
+            return {
+                success: false,
+                error: 'Username is already taken'
+            };
+        }
+
+        // Generate password and keys
+        const password = generatePassword();
+        const keys = getPrivateKeys(username, password);
+
+        if (!creatorUsername || !creatorActiveKey) {
+            return {
+                success: false,
+                error: 'Account creator credentials not provided'
+            };
+        }
+
+        // Create the private key object for signing
+        const creatorKey = dhive.PrivateKey.fromString(creatorActiveKey);
+        
+        // Create authority objects for the new account
+        const ownerAuth = {
+            weight_threshold: 1,
+            account_auths: [],
+            key_auths: [[keys.ownerPubkey, 1]]
+        };
+
+        const activeAuth = {
+            weight_threshold: 1,
+            account_auths: [],
+            key_auths: [[keys.activePubkey, 1]]
+        };
+
+        const postingAuth = {
+            weight_threshold: 1,
+            account_auths: [],
+            key_auths: [[keys.postingPubkey, 1]]
+        };
+
+        // Try to create account with claimed tokens first
+        try {
+            const claimedAccountOp: dhive.Operation = [
+                'create_claimed_account',
+                {
+                    creator: creatorUsername,
+                    new_account_name: username,
+                    owner: ownerAuth,
+                    active: activeAuth,
+                    posting: postingAuth,
+                    memo_key: keys.memoPubkey,
+                    json_metadata: JSON.stringify({
+                        profile: {
+                            name: username,
+                            about: 'Created via SkateHive Account Shop',
+                            created_by: 'skatehive-account-shop'
+                        }
+                    })
+                }
+            ];
+
+            console.log('Attempting to create account with claimed tokens...');
+            
+            const claimedResult = await HiveClient.broadcast.sendOperations(
+                [claimedAccountOp],
+                creatorKey
+            );
+
+            console.log('✅ Account created successfully with claimed tokens:', claimedResult);
+
+            return {
+                success: true,
+                account: {
+                    username,
+                    password,
+                    keys
+                },
+                transactionId: claimedResult.id,
+                method: 'claimed'
+            };
+
+        } catch (claimedError) {
+            console.log('❌ Failed to create with claimed tokens, trying with HIVE payment...', claimedError);
+
+            // Fallback to paid account creation (3 HIVE)
+            try {
+                const paidAccountOp: dhive.Operation = [
+                    'account_create',
+                    {
+                        fee: '3.000 HIVE', // 3 HIVE as a string
+                        creator: creatorUsername,
+                        new_account_name: username,
+                        owner: ownerAuth,
+                        active: activeAuth,
+                        posting: postingAuth,
+                        memo_key: keys.memoPubkey,
+                        json_metadata: JSON.stringify({
+                            profile: {
+                                name: username,
+                                about: 'Created via SkateHive Account Shop',
+                                created_by: 'skatehive-account-shop'
+                            }
+                        })
+                    }
+                ];
+
+                console.log('Attempting to create account with HIVE payment...');
+
+                const paidResult = await HiveClient.broadcast.sendOperations(
+                    [paidAccountOp],
+                    creatorKey
+                );
+
+                console.log('✅ Account created successfully with HIVE payment:', paidResult);
+
+                return {
+                    success: true,
+                    account: {
+                        username,
+                        password,
+                        keys
+                    },
+                    transactionId: paidResult.id,
+                    method: 'paid'
+                };
+
+            } catch (paidError) {
+                console.error('❌ Failed to create account with HIVE payment:', paidError);
+                return {
+                    success: false,
+                    error: `Failed to create account: ${paidError instanceof Error ? paidError.message : 'Unknown error'}`
+                };
+            }
+        }
+
+    } catch (error) {
+        console.error('❌ Error in createHiveAccount:', error);
+        return {
+            success: false,
+            error: `Account creation failed: ${error instanceof Error ? error.message : 'Unknown error'}`
+        };
+    }
+}
+
+/**
+ * Check account creation resources for the creator account
+ * @param {string} creatorUsername - The creator account username
+ * @returns {Promise<{claimed_accounts: number, balance: string}>} Available resources
+ */
+export async function checkCreatorResources(creatorUsername: string): Promise<{claimed_accounts: number, balance: string}> {
+    try {
+        const [account] = await HiveClient.database.getAccounts([creatorUsername]);
+        
+        if (!account) {
+            throw new Error('Creator account not found');
+        }
+
+        const balance = typeof account.balance === 'string' ? account.balance : account.balance.toString();
+
+        return {
+            claimed_accounts: (account as any).pending_claimed_accounts || 0,
+            balance: balance
+        };
+    } catch (error) {
+        console.error('Error checking creator resources:', error);
+        throw error;
+    }
+}

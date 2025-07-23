@@ -19,6 +19,23 @@ export default function getMailTemplate_Invite(
   
   const enterDetailsStep = localizedStrings.enterDetailsStep.replace('{desiredUsername}', desiredUsername);
 
+  // ETH Transaction info (show if we have a transaction hash and it's not a confirmation email)
+  const ethTransactionContent = keys?.transactionHash && !isTransactionConfirmation ? `
+    <!-- ETH Payment Confirmation -->
+    <div style="background-color: #e3f2fd; border: 2px solid #2196f3; border-radius: 8px; padding: 20px; margin: 20px 0;">
+      <h3 style="color: #1976d2; margin-top: 0;">💰 ETH Payment Confirmed</h3>
+      <p style="margin: 10px 0;"><strong>ETH Transaction Hash:</strong></p>
+      <p style="font-family: monospace; background: #f5f5f5; padding: 10px; border-radius: 4px; word-break: break-all; font-size: 12px; color: #333;">${keys.transactionHash}</p>
+      ${keys.hiveTransactionId ? `
+        <p style="margin: 10px 0;"><strong>Hive Account Creation Transaction:</strong></p>
+        <p style="font-family: monospace; background: #f5f5f5; padding: 10px; border-radius: 4px; word-break: break-all; font-size: 12px; color: #333;">${keys.hiveTransactionId}</p>
+      ` : ''}
+      ${keys.creationMethod ? `
+        <p style="margin: 10px 0;"><strong>Creation Method:</strong> ${keys.creationMethod === 'claimed' ? 'Account Creation Tokens (Free)' : 'HIVE Payment (3 HIVE)'}</p>
+      ` : ''}
+    </div>
+  ` : ``;
+
   // Transaction confirmation content
   const transactionContent = isTransactionConfirmation ? `
     <!-- Transaction Confirmation -->
@@ -63,6 +80,7 @@ export default function getMailTemplate_Invite(
       <h2 style="color: ${localizedStrings.colors.foreground1};">${onboardedMessage}</h2>
       <p>${isTransactionConfirmation ? 'Thank you for your purchase! Your transaction has been confirmed on the blockchain.' : localizedStrings.introParagraph}</p>
       
+      ${ethTransactionContent}
       ${transactionContent}
       ${credentialsContent}
       <!-- Image Button (CTA) -->

@@ -7,64 +7,63 @@ import BuyTransaction from "./BuyTransaction";
 import TransactionSuccess from "./TransactionSuccess";
 import { ACCOUNT_PRICE_ETH } from "./constants";
 
-// Function for sending transaction confirmation email
+// Function for creating actual Hive account and sending credentials
 const createHiveAccount = async (
   username: string,
   email: string,
   txHash: string
 ) => {
-  console.log("Sending transaction confirmation email", {
+  console.log("🚀 Starting Hive account creation process", {
     username,
     email,
     txHash,
   });
 
   try {
-    const emailData = {
-      to: email,
-      subject: "Transaction Confirmation - SkateHive Account Purchase",
-      createdby: "SkateHive Account Shop",
-      desiredUsername: username,
-      masterPassword: "PENDING_ACCOUNT_CREATION", // Placeholder until account is created
-      keys: {
-        posting: "PENDING_GENERATION",
-        active: "PENDING_GENERATION",
-        memo: "PENDING_GENERATION",
-        owner: "PENDING_GENERATION",
-        transactionHash: txHash, // Include the actual transaction hash
-      },
-      language: "en",
-    };
-
-    const response = await fetch("/api/invite", {
+    // Create the actual Hive account directly
+    console.log("🔑 Creating Hive account...");
+    const accountCreationResponse = await fetch("/api/create-account", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(emailData),
+      body: JSON.stringify({
+        username,
+        email,
+        txHash,
+      }),
     });
 
-    const result = await response.json();
+    const accountResult = await accountCreationResponse.json();
 
-    if (result.success) {
-      console.log("✅ Transaction confirmation email sent successfully!");
-      alert(
-        `✅ Transaction confirmed! Confirmation email sent to ${email} with transaction hash: ${txHash}`
-      );
+    if (accountResult.success) {
+      const method =
+        accountResult.account?.method === "claimed"
+          ? "account creation tokens"
+          : "HIVE payment";
+      console.log(`✅ Hive account created successfully using ${method}!`);
+
+      if (accountResult.warning) {
+        alert(
+          `⚠️ Account created but there was an issue: ${accountResult.warning}`
+        );
+      } else {
+        alert(
+          `🎉 Success! Your Hive account "${username}" has been created and credentials sent to ${email}!\n\nMethod: ${method}\nHive Transaction: ${accountResult.account?.hiveTransactionId}`
+        );
+      }
     } else {
-      console.error("❌ Failed to send confirmation email:", result.error);
+      console.error("❌ Failed to create Hive account:", accountResult.error);
       alert(
-        `⚠️ Transaction confirmed but failed to send email: ${
-          result.error || "Unknown error"
-        }`
+        `❌ Failed to create Hive account: ${accountResult.error}\n\nDon't worry - your ETH payment was successful. Please contact support with your transaction hash: ${txHash}`
       );
     }
   } catch (error) {
-    console.error("❌ Error sending confirmation email:", error);
+    console.error("❌ Error in account creation process:", error);
     alert(
-      `⚠️ Transaction confirmed but email service error: ${
+      `❌ Error during account creation: ${
         error instanceof Error ? error.message : "Unknown error"
-      }`
+      }\n\nYour ETH payment was successful. Please contact support with your transaction hash: ${txHash}`
     );
   }
 };
