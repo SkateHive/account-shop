@@ -13,11 +13,11 @@ export async function GET(request: NextRequest) {
     frame: {
       version: "1",
       name: "SkateHive Account Shop",
-      iconUrl: process.env.NEXT_PUBLIC_ICON_URL || `${process.env.NEXT_PUBLIC_URL}/images/account-shop.png`,
-      splashImageUrl: process.env.NEXT_PUBLIC_SPLASH_IMAGE_URL || `${process.env.NEXT_PUBLIC_URL}/images/account-shop.png`,
-      splashBackgroundColor: process.env.NEXT_PUBLIC_SPLASH_BACKGROUND_COLOR || "#1a1a1a",
+      iconUrl: "https://base.skatehive.app/images/account-shop.png",
+      splashImageUrl: "https://base.skatehive.app/images/account-shop.png",
+      splashBackgroundColor:  "#1a1a1a",
       homeUrl: process.env.NEXT_PUBLIC_URL || "https://account-shop.skatehive.app",
-      webhookUrl: `${process.env.NEXT_PUBLIC_URL}/api/webhooks/farcaster`,
+      webhookUrl: `https://base.skatehive.app/api/webhooks/farcaster`,
       subtitle: "Buy SkateHive accounts with crypto",
       description: "Create your Hive blockchain account instantly by paying with ETH or USDC. Get your SkateHive account and start posting your skateboarding content on the decentralized web.",
       screenshotUrls: [
