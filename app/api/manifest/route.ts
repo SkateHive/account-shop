@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
       homeUrl: "https://base.skatehive.app",
       webhookUrl: "https://base.skatehive.app/api/webhooks/farcaster",
       subtitle: "Buy Hive accounts with crypto",
-      description: "Create your Hive blockchain account instantly by paying with ETH or USDC. Get your SkateHive account and start posting your skateboarding content on the decentralized web.",
+      description: "Create your Hive blockchain account instantly by paying with ETH or USDC. Get your SkateHive account ready to post!",
       screenshotUrls: [
         "https://base.skatehive.app/images/account-shop.png"
       ],
@@ -29,7 +29,7 @@ export async function GET(request: NextRequest) {
         "account"
       ],
       heroImageUrl: "https://base.skatehive.app/images/account-shop.png",
-      tagline: "Get your Hive account instantly",
+      tagline: "Get your SkateHive account now",
       ogTitle: "SkateHive Account Shop",
       ogDescription: "Create your Hive blockchain account instantly by paying with ETH or USDC",
       ogImageUrl: "https://base.skatehive.app/images/account-shop.png"
