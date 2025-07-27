@@ -55,15 +55,6 @@ export default function App() {
           <h1 className="text-lg font-bold">SkateHive Account Shop</h1>
         </div>
         <div className="flex items-center space-x-2">
-          {!context?.client.added && (
-            <button
-              type="button"
-              className="cursor-pointer bg-blue-500 text-white px-3 py-1 rounded text-sm font-semibold"
-              onClick={handleAddFrame}
-            >
-              SAVE FRAME
-            </button>
-          )}
           {context?.client.added && (
             <button
               type="button"
