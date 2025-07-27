@@ -6,17 +6,16 @@ import { Providers } from "./providers";
 const BASE_URL = process.env.NEXT_PUBLIC_URL || "https://base.skatehive.app";
 
 const frameObject = {
-  version: "next",
-  imageUrl: `${BASE_URL}/images/account-shop.png `,
+  version: "1",
+  imageUrl: `${BASE_URL}/images/account-shop.png`,
   button: {
     title: "Get SkateHive Account",
     action: {
       type: "launch_frame",
-      name: "Skatehive",
+      name: "SkateHive",
       url: BASE_URL,
     },
   },
-  postUrl: BASE_URL,
 };
 
 export const metadata: Metadata = {
@@ -69,9 +68,7 @@ export const metadata: Metadata = {
   },
   viewport: "width=device-width, initial-scale=1",
   other: {
-    "fc:frame": JSON.stringify(frameObject),
-    "fc:frame:image": `${BASE_URL}/ogimage.png`,
-    "fc:frame:post_url": BASE_URL,
+    "fc:miniapp": JSON.stringify(frameObject),
   },
 };
 
