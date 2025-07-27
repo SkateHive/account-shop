@@ -14,6 +14,7 @@
     "@hiveio/dhive": "^1.3.2",
     "@tanstack/react-query": "^5",
     "html-to-text": "^9.0.5",
+    "minikit": "link:@coinbase/onchainkit/minikit",
     "next": "15.3.3",
     "nodemailer": "^7.0.5",
     "react": "^18",

@@ -3,6 +3,22 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Providers } from "./providers";
 
+const BASE_URL = process.env.NEXT_PUBLIC_URL || "https://base.skatehive.app";
+
+const frameObject = {
+  version: "next",
+  imageUrl: `${BASE_URL}/images/account-shop.png `,
+  button: {
+    title: "Get SkateHive Account",
+    action: {
+      type: "launch_frame",
+      name: "Skatehive",
+      url: BASE_URL,
+    },
+  },
+  postUrl: BASE_URL,
+};
+
 export const metadata: Metadata = {
   title: "SkateHive Account Shop - Buy Your Hive Account with Crypto",
   description:
@@ -16,18 +32,21 @@ export const metadata: Metadata = {
     "ETH",
     "USDC",
     "Crypto Payment",
+    "MiniKit",
+    "Farcaster",
+    "Base App",
+    "Mini App",
   ],
   authors: [{ name: "SkateHive" }],
   openGraph: {
     title: "SkateHive Account Shop",
     description:
       "Create your Skatehive account instantly paying with ETH or USDC.",
-    url:
-      process.env.NEXT_PUBLIC_SITE_URL || "https://account-shop.skatehive.app",
+    url: process.env.NEXT_PUBLIC_URL || "https://base.skatehive.app",
     siteName: "SkateHive Account Shop",
     images: [
       {
-        url: "/images/account-shop.png",
+        url: process.env.NEXT_PUBLIC_IMAGE_URL || "/images/account-shop.png",
         width: 1200,
         height: 630,
         alt: "SkateHive Account Shop - Buy Hive Accounts with Crypto",
@@ -41,7 +60,7 @@ export const metadata: Metadata = {
     title: "SkateHive Account Shop",
     description:
       "Create your Skatehive account instantly paying with ETH or USDC.",
-    images: ["/images/account-shop.png"],
+    images: [process.env.NEXT_PUBLIC_IMAGE_URL || "/images/account-shop.png"],
     creator: "@skatehive",
   },
   robots: {
@@ -49,6 +68,11 @@ export const metadata: Metadata = {
     follow: true,
   },
   viewport: "width=device-width, initial-scale=1",
+  other: {
+    "fc:frame": JSON.stringify(frameObject),
+    "fc:frame:image": `${BASE_URL}/ogimage.png`,
+    "fc:frame:post_url": BASE_URL,
+  },
 };
 
 export default function RootLayout({
