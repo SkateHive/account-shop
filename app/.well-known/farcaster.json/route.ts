@@ -2,11 +2,14 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
   const manifest = {
-    accountAssociation: {
-      header: process.env.FARCASTER_HEADER || "",
-      payload: process.env.FARCASTER_PAYLOAD || "",
-      signature: process.env.FARCASTER_SIGNATURE || ""
-    },
+
+  accountAssociation: {
+    header: "eyJmaWQiOjIwNzIxLCJ0eXBlIjoiYXV0aCIsImtleSI6IjB4MmQxODgyMzA0YzlBNkZhN0Y5ODdDMUI0MWM5ZkQ1RThDRjA1MTZlMiJ9",
+    payload: "eyJkb21haW4iOiJiYXNlLnNrYXRlaGl2ZS5hcHAifQ",
+    signature: "kdn+Gg+4DyZDPxNoGYqNiC7taU0KXcGmKoZfxI1GcswpDyzzERXUC/Le7hqdsXfT7Tg/z4zYYF9gL1gSTwWaJBw="
+  },
+
+
     frame: {
       version: "1",
       name: "SkateHive Account Shop",
