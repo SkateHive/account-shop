@@ -1,28 +1,26 @@
 {
   "accountAssociation": {
-    "header": "eyJmaWQiOjE4MDk4LCJ0eXBlIjoiY3VzdG9keSIsImtleSI6IjB4N0I5QUNlOWEzMzA4QTk1MDUyNjEwODA2RjU5Nzk0MWUzQWRkNDQ2OSJ9",
-    "payload": "eyJkb21haW4iOiJhY2NvdW50LXNob3Auc2thdGVoaXZlLmFwcCJ9",
-    "signature": "MHg5MTViYWYyZjZmYTk3MDY0NGFjYjhiMjBhOTRlOWUzMjI3ZGNmMWE3YWE1OGI0Y2IyZWJmZDAwN2QzOTJjNzQwMmFkOThjMGUyNzJkMzE0M2NlZjY5ZGQ3MWMyNTcwYzE1MWE5YTNhZGUzYjEzNjFkOTU4NjJkM2YzMGVlMzNkZjFj"
+    "header": "eyJmaWQiOjIwNzIxLCJ0eXBlIjoiYXV0aCIsImtleSI6IjB4MmQxODgyMzA0YzlBNkZhN0Y5ODdDMUI0MWM5ZkQ1RThDRjA1MTZlMiJ9",
+    "payload": "eyJkb21haW4iOiJiYXNlLnNrYXRlaGl2ZS5hcHAifQ",
+    "signature": "kdn+Gg+4DyZDPxNoGYqNiC7taU0KXcGmKoZfxI1GcswpDyzzERXUC/Le7hqdsXfT7Tg/z4zYYF9gL1gSTwWaJBw="
   },
   "frame": {
     "version": "1",
     "name": "SkateHive Account Shop",
-    "iconUrl": "https://account-shop.skatehive.app/images/account-shop.png",
-    "splashImageUrl": "https://account-shop.skatehive.app/images/account-shop.png",
+    "iconUrl": "https://base.skatehive.app/images/base.png",
+    "splashImageUrl": "https://base.skatehive.app/images/base.png",
     "splashBackgroundColor": "#1a1a1a",
-    "homeUrl": "https://account-shop.skatehive.app",
-    "webhookUrl": "https://account-shop.skatehive.app/api/webhooks/farcaster",
+    "homeUrl": "https://base.skatehive.app",
+    "webhookUrl": "https://base.skatehive.app/api/webhooks/farcaster",
     "subtitle": "Buy Hive accounts with crypto",
     "description": "Create your Hive blockchain account instantly by paying with ETH or USDC. Get your SkateHive account and start posting your skateboarding content on the decentralized web.",
-    "screenshotUrls": [
-      "https://account-shop.skatehive.app/images/account-shop.png"
-    ],
+    "screenshotUrls": ["https://base.skatehive.app/images/base.png"],
     "primaryCategory": "finance",
     "tags": ["hive", "skateboarding", "blockchain", "crypto", "account"],
-    "heroImageUrl": "https://account-shop.skatehive.app/images/account-shop.png",
+    "heroImageUrl": "https://base.skatehive.app/images/base.png",
     "tagline": "Get your Hive account instantly",
     "ogTitle": "SkateHive Account Shop",
     "ogDescription": "Create your Hive blockchain account instantly by paying with ETH or USDC",
-    "ogImageUrl": "https://account-shop.skatehive.app/images/account-shop.png"
+    "ogImageUrl": "https://base.skatehive.app/images/base.png"
   }
 }
