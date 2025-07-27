@@ -16,12 +16,12 @@ export async function GET(request: NextRequest) {
       iconUrl: "https://base.skatehive.app/images/account-shop.png",
       splashImageUrl: "https://base.skatehive.app/images/account-shop.png",
       splashBackgroundColor:  "#1a1a1a",
-      homeUrl: process.env.NEXT_PUBLIC_URL || "https://account-shop.skatehive.app",
-      webhookUrl: `https://base.skatehive.app/api/webhooks/farcaster`,
+      homeUrl: "https://base.skatehive.app",
+      webhookUrl: "https://base.skatehive.app/api/webhooks/farcaster",
       subtitle: "Buy SkateHive accounts with crypto",
       description: "Create your Hive blockchain account instantly by paying with ETH or USDC. Get your SkateHive account and start posting your skateboarding content on the decentralized web.",
       screenshotUrls: [
-        process.env.NEXT_PUBLIC_IMAGE_URL || `${process.env.NEXT_PUBLIC_URL}/images/account-shop.png`
+        "https://base.skatehive.app/images/account-shop.png"
       ],
       primaryCategory: "finance",
       tags: [
@@ -31,11 +31,11 @@ export async function GET(request: NextRequest) {
         "crypto",
         "account"
       ],
-      heroImageUrl: process.env.NEXT_PUBLIC_IMAGE_URL || `${process.env.NEXT_PUBLIC_URL}/images/account-shop.png`,
+      heroImageUrl: "https://base.skatehive.app/images/account-shop.png",
       tagline: "Get your SkateHive account instantly",
       ogTitle: "SkateHive Account Shop",
       ogDescription: "Create your Hive blockchain account instantly by paying with ETH or USDC",
-      ogImageUrl: process.env.NEXT_PUBLIC_IMAGE_URL || `${process.env.NEXT_PUBLIC_URL}/images/account-shop.png`
+      ogImageUrl: "https://base.skatehive.app/images/account-shop.png"
     }
   };
 

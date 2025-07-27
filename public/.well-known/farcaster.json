@@ -1,22 +1,28 @@
 {
-  "frame": {
-    "name": "Skatehive Account Shp",
-    "version": "1",
-    "iconUrl": "https://base.skatehive.app/icon.png",
-    "homeUrl": "https://base.skatehive.app",
-    "imageUrl": "https://base.skatehive.app/image.png",
-    "buttonTitle": "Get a Skatehive Account",
-    "splashImageUrl": "https://base.skatehive.app/splash.png",
-    "splashBackgroundColor": "#111111",
-    "webhookUrl": "https://base.skatehive.app/api/webhook",
-    "subtitle": "Buy Skatehive Account ",
-    "description": "Buy Skatehive Account ",
-    "primaryCategory": "utility",
-    "tags": ["hive", "account", "onchainkit"]
-  },
   "accountAssociation": {
     "header": "eyJmaWQiOjIwNzIxLCJ0eXBlIjoiYXV0aCIsImtleSI6IjB4MmQxODgyMzA0YzlBNkZhN0Y5ODdDMUI0MWM5ZkQ1RThDRjA1MTZlMiJ9",
     "payload": "eyJkb21haW4iOiJiYXNlLnNrYXRlaGl2ZS5hcHAifQ",
     "signature": "kdn+Gg+4DyZDPxNoGYqNiC7taU0KXcGmKoZfxI1GcswpDyzzERXUC/Le7hqdsXfT7Tg/z4zYYF9gL1gSTwWaJBw="
+  },
+  "frame": {
+    "version": "1",
+    "name": "SkateHive Account Shop",
+    "iconUrl": "https://base.skatehive.app/images/account-shop.png",
+    "splashImageUrl": "https://base.skatehive.app/images/account-shop.png",
+    "splashBackgroundColor": "#1a1a1a",
+    "homeUrl": "https://base.skatehive.app",
+    "webhookUrl": "https://base.skatehive.app/api/webhooks/farcaster",
+    "subtitle": "Buy Hive accounts with crypto",
+    "description": "Create your Hive blockchain account instantly by paying with ETH or USDC. Get your SkateHive account and start posting your skateboarding content on the decentralized web.",
+    "screenshotUrls": [
+      "https://base.skatehive.app/images/account-shop.png"
+    ],
+    "primaryCategory": "finance",
+    "tags": ["hive", "skateboarding", "blockchain", "crypto", "account"],
+    "heroImageUrl": "https://base.skatehive.app/images/account-shop.png",
+    "tagline": "Get your Hive account instantly",
+    "ogTitle": "SkateHive Account Shop",
+    "ogDescription": "Create your Hive blockchain account instantly by paying with ETH or USDC",
+    "ogImageUrl": "https://base.skatehive.app/images/account-shop.png"
   }
 }
