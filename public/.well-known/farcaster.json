@@ -8,15 +8,15 @@
     "version": "1",
     "name": "SkateHive Account Shop",
     "iconUrl": "https://base.skatehive.app/images/account-shop.png",
+    "imageUrl": "https://base.skatehive.app/images/account-shop.png",
     "splashImageUrl": "https://base.skatehive.app/images/account-shop.png",
     "splashBackgroundColor": "#1a1a1a",
     "homeUrl": "https://base.skatehive.app",
     "webhookUrl": "https://base.skatehive.app/api/webhooks/farcaster",
+    "buttonTitle": "Get SkateHive Account",
     "subtitle": "Buy Hive accounts with crypto",
     "description": "Create your Hive blockchain account instantly by paying with ETH or USDC. Get your SkateHive account ready to post!",
-    "screenshotUrls": [
-      "https://base.skatehive.app/images/account-shop.png"
-    ],
+    "screenshotUrls": ["https://base.skatehive.app/images/account-shop.png"],
     "primaryCategory": "finance",
     "tags": ["hive", "skateboarding", "blockchain", "crypto", "account"],
     "heroImageUrl": "https://base.skatehive.app/images/account-shop.png",
