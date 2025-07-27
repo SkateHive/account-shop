@@ -73,20 +73,6 @@ export default function App() {
               TEST NOTIFICATION
             </button>
           )}
-          <button
-            type="button"
-            onClick={() => viewProfile()}
-            className="cursor-pointer bg-transparent font-semibold text-sm"
-          >
-            PROFILE
-          </button>
-          <button
-            type="button"
-            className="cursor-pointer bg-transparent font-semibold text-sm"
-            onClick={close}
-          >
-            CLOSE
-          </button>
         </div>
       </div>
 
